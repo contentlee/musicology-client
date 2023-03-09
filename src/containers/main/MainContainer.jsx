@@ -1,5 +1,5 @@
 const MainContainer = () => {
-  return <></>;
+  return <>main</>;
 };
 
 export default MainContainer;

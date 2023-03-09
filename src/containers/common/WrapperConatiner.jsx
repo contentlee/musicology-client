@@ -1,14 +1,47 @@
+import { useState } from "react";
 import { Outlet } from "react-router";
-import FooterContainer from "./FooterContainer";
-import NavContainer from "./NavContainer";
+
+import styled from "styled-components";
+
+import MenuContainer from "./MenuContainer";
+import { LogoComponent, SearchInputComponent } from "../../components/common";
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  max-width: 1020px;
+`;
+
+const Header = styled.header`
+  position: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  max-width: 1020px;
+
+  background-color: #fff;
+  z-index: 10;
+`;
 
 const WrapperContainer = () => {
+  const [mode, setMode] = useState("search");
   return (
-    <>
-      <NavContainer />
+    <Wrapper>
+      <Header>
+        <LogoComponent />
+        <SearchInputComponent />
+        <MenuContainer />
+      </Header>
+
       <Outlet />
-      <FooterContainer />
-    </>
+    </Wrapper>
   );
 };
 export default WrapperContainer;

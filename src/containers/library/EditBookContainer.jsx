@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 
@@ -8,6 +10,7 @@ import {
   TextareaComponent,
   TitleComponent,
 } from "../../components/common";
+import { http } from "../../libs/http";
 
 const Wrapper = styled.section`
   padding: 20px;
@@ -33,24 +36,67 @@ const Form = styled.form`
 const EditBookContainer = () => {
   const { id } = useParams();
 
+  const [book, setBook] = useState();
+
   const navigate = useNavigate();
   const handleCancelOnClick = (e) => {
     e.preventDefault();
     navigate(-1);
   };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const target = e.target;
+    const req = {
+      _id: id,
+      title: target[0].value,
+      subtitle: target[1].value,
+      author: target[2].value,
+      date_of_publication: target[3].value,
+      publisher: target[4].value,
+      img: target[5].value,
+      description: target[6].value,
+      user_id: "admin",
+      user_name: "admin",
+    };
+
+    http
+      .put(`/edit/${id}`, req)
+      .then(() => {
+        navigate(`/library/detail/${id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    http
+      .get(`/library/detail/${id}`)
+      .then((res) => {
+        setBook(res);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <MainWrapperComponent>
       <TitleComponent title="책 수정하기" />
       <Wrapper>
-        <Form>
-          <InputComponent name="Title" required={true} />
-          <InputComponent name="Subtitle" />
-          <InputComponent name="Author" required={true} />
-          <InputComponent name="Date of Publication" type="date" required={true} />
-          <InputComponent name="Publisher" required={true} />
-          <InputComponent name="Img" />
+        <Form onSubmit={handleOnSubmit}>
+          <InputComponent defaultValue={book?.title} name="Title" required={true} />
+          <InputComponent defaultValue={book?.subtitle} name="Subtitle" />
+          <InputComponent defaultValue={book?.author} name="Author" required={true} />
+          <InputComponent
+            defaultValue={book ? format(new Date(book?.date_of_publication), "yyyy-MM-dd") : ""}
+            name="Date of Publication"
+            type="date"
+            required={true}
+          />
+          <InputComponent defaultValue={book?.publisher} name="Publisher" required={true} />
+          <InputComponent defaultValue={book?.img} name="Img" />
           <hr />
-          <TextareaComponent name="Description" />
+          <TextareaComponent defaultValue={book?.description} name="Description" />
           <hr />
 
           <div>

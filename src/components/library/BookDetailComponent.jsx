@@ -1,3 +1,4 @@
+import { format, getYear } from "date-fns";
 import styled from "styled-components";
 
 const Wrapper = styled.section`
@@ -36,10 +37,8 @@ const DetailList = styled.ul`
   li {
     list-style-type: none;
     span {
-      &:first-child {
-        font-size: 12px;
-        font-weight: 900;
-      }
+      font-size: 12px;
+      font-weight: 900;
     }
   }
 `;
@@ -54,29 +53,33 @@ const InfoList = styled.ul`
   }
 `;
 
-const BookDetailComponent = ({ children }) => {
+const BookDetailComponent = ({ book, children }) => {
   return (
     <Wrapper>
       <Img
-        src="https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        src={
+          book?.img
+            ? book.img
+            : "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        }
         alt="책 이미지"
       />
       <Detail>
-        <h2>title</h2>
-        <h3>subtitle</h3>
+        <h2>{book?.title}</h2>
+        <h3>{book?.subtitle}</h3>
         <DetailList>
           <li>
             <span>Author | </span>
-            <span>test 1</span>
+            <span>{book?.author}</span>
           </li>
           <li>
             <span>Publisher | </span>
-            <span>test 1</span>
+            <span>{book?.publisher}</span>
           </li>
 
           <li>
             <span>Year of Publication | </span>
-            <span>2022</span>
+            <span>{book ? format(new Date(book.date_of_publication), "yyyy-MM-dd") : ""}</span>
           </li>
         </DetailList>
 
@@ -85,16 +88,16 @@ const BookDetailComponent = ({ children }) => {
         <InfoList>
           <li>
             <span>작성자 | </span>
-            <span>test 1</span>
+            <span>{book?.user_name}</span>
           </li>
           <li>
             <span>작성일 | </span>
-            <span>2022-01-01</span>
+            <span>{book ? format(new Date(book.create_date), "yyyy-MM-dd HH:mm:ss") : ""}</span>
           </li>
 
           <li>
             <span>최종 수정일 | </span>
-            <span>2022-01-01</span>
+            <span>{book ? format(new Date(book.edit_date), "yyyy-MM-dd HH:mm:ss") : ""}</span>
           </li>
         </InfoList>
       </Detail>

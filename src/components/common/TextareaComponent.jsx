@@ -31,7 +31,7 @@ const Wrapper = styled.label`
   }
 `;
 
-const TextareaComponent = ({ name, id, type, placeholder, fn, required }) => {
+const TextareaComponent = ({ defaultValue, name, id, type, placeholder, fn, required }) => {
   const ref = useRef(null);
   const handleTextareaOnChange = (e) => {
     e.preventDefault();
@@ -44,6 +44,7 @@ const TextareaComponent = ({ name, id, type, placeholder, fn, required }) => {
     <Wrapper htmlFor={id}>
       <span>{name}</span>
       <textarea
+        defaultValue={defaultValue}
         ref={ref}
         required={required}
         id={id}

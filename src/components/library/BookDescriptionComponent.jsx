@@ -4,10 +4,10 @@ const Wrapper = styled.section`
   padding: 20px;
 `;
 
-const BookDescriptionComponent = () => {
+const BookDescriptionComponent = ({ description }) => {
   return (
     <Wrapper>
-      <p>description</p>
+      <p>{description}</p>
     </Wrapper>
   );
 };

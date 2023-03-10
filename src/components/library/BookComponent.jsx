@@ -1,3 +1,4 @@
+import { getYear } from "date-fns";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -74,22 +75,23 @@ const Wrapper = styled.div`
   }
 `;
 
-const BookComponent = ({ fn }) => {
+const BookComponent = ({ fn, book }) => {
   return (
     <Wrapper
       style={{
-        backgroundImage:
-          "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        backgroundImage: book.img
+          ? book.img
+          : "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       }}
-      onClick={fn}
+      onClick={(e) => fn(e, book._id)}
     >
       <div />
-      <img src={`${process.env.PUBLIC_URL}/assets/icons/star_filled_icon.svg`} alt="star" />
+      <img src={`${process.env.PUBLIC_URL}/assets/icons/star_outline_icon.svg`} alt="star" />
       <div>
-        <span className="title">title</span>
-        <span className="subtitle">subtitle</span>
-        <span className="author">author</span>
-        <span className="year">year</span>
+        <span className="title">{book.title}</span>
+        <span className="subtitle">{book.subtitle}</span>
+        <span className="author">{book.author}</span>
+        <span className="year">{getYear(new Date(book.date_of_publication))}</span>
       </div>
     </Wrapper>
   );

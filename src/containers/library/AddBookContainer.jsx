@@ -8,6 +8,7 @@ import {
   TextareaComponent,
   TitleComponent,
 } from "../../components/common";
+import { http } from "../../libs/http";
 
 const Wrapper = styled.section`
   padding: 20px;
@@ -36,11 +37,35 @@ const AddBookContainer = () => {
     e.preventDefault();
     navigate(-1);
   };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const target = e.target;
+    const req = {
+      title: target[0].value,
+      subtitle: target[1].value,
+      author: target[2].value,
+      date_of_publication: target[3].value,
+      publisher: target[4].value,
+      img: target[5].value,
+      description: target[6].value,
+      user_id: "admin",
+      user_name: "admin",
+    };
+
+    http
+      .post("/add", req)
+      .then(() => {
+        navigate("/library");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <MainWrapperComponent>
       <TitleComponent title="책 추가하기" />
       <Wrapper>
-        <Form>
+        <Form onSubmit={handleOnSubmit}>
           <InputComponent name="Title" required={true} />
           <InputComponent name="Subtitle" />
           <InputComponent name="Author" required={true} />

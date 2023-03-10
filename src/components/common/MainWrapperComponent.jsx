@@ -5,14 +5,8 @@ const Wrapper = styled.main`
   top: 58px;
 
   width: 100%;
-
-  h1 {
-    margin-left: 20px;
-    font-size: 16px;
-  }
-  hr {
-    margin: 0 12px;
-  }
+  padding: 0 12px;
+  box-sizing: border-box;
 `;
 
 const MainWrapperComponent = ({ children }) => {

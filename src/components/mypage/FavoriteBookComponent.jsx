@@ -1,26 +1,41 @@
 import styled from "styled-components";
 
-const Wrapper = styled.section`
+const Wrapper = styled.div`
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex-direction: row-reverse;
+  justify-content: center;
+  min-height: 200px;
+  max-height: 300px;
 
-  width: 100%;
+  padding: 0 10px;
 
-  box-sizing: border-box;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 
   @media screen and (max-width: 600px) {
-    flex-direction: column;
+    img {
+      &:last-child {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+      }
+    }
   }
 `;
 
 const Img = styled.img`
   width: 30%;
-  min-width: 200px;
+  max-height: 280px;
 
   margin: 10px;
   object-fit: contain;
+
+  @media screen and (max-width: 600px) {
+    width: 20%;
+  }
 `;
 
 const Detail = styled.div`
@@ -44,25 +59,15 @@ const DetailList = styled.ul`
   }
 `;
 
-const InfoList = styled.ul`
-  padding: 0;
-  font-size: 12px;
-  color: gray;
-
-  li {
-    list-style-type: none;
-  }
-`;
-
-const BookDetailComponent = ({ children }) => {
+const FavoirteBookComponent = ({ fn, children }) => {
   return (
-    <Wrapper>
+    <Wrapper onClick={fn}>
       <Img
         src="https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
         alt="책 이미지"
       />
       <Detail>
-        <h2>title</h2>
+        <h2>안녕하세요, 저는 누구누구입니다.</h2>
         <h3>subtitle</h3>
         <DetailList>
           <li>
@@ -79,27 +84,9 @@ const BookDetailComponent = ({ children }) => {
             <span>2022</span>
           </li>
         </DetailList>
-
-        {children}
-
-        <InfoList>
-          <li>
-            <span>작성자 | </span>
-            <span>test 1</span>
-          </li>
-          <li>
-            <span>작성일 | </span>
-            <span>2022-01-01</span>
-          </li>
-
-          <li>
-            <span>최종 수정일 | </span>
-            <span>2022-01-01</span>
-          </li>
-        </InfoList>
       </Detail>
+      {children}
     </Wrapper>
   );
 };
-
-export default BookDetailComponent;
+export default FavoirteBookComponent;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { IconComponent } from "../../components/common";
@@ -7,35 +7,21 @@ const Wrapper = styled.div`
   display: flex;
   margin-right: 10px;
 
-  img {
-    &:last-child {
-      display: none;
-    }
-  }
+  border-radius: 50px;
+  background-color: #fff;
+
   @media screen and (max-width: 600px) {
     position: fixed;
     bottom: 24px;
     right: 24px;
 
     flex-direction: column;
-
-    img {
-      &:last-child {
-        display: flex;
-      }
-    }
+    transition: 0.3s;
   }
 `;
 
 const MenuContainer = () => {
   const navigate = useNavigate();
-
-  const [toggle, setToggle] = useState(false);
-
-  const handleMenuOnClick = (e) => {
-    e.preventDefault();
-    setToggle(!toggle);
-  };
 
   const handleListOnClick = (e) => {
     e.preventDefault();
@@ -49,13 +35,17 @@ const MenuContainer = () => {
     e.preventDefault();
     navigate("/favorite");
   };
+  const handleAdminOnClick = (e) => {
+    e.preventDefault();
+    navigate("/me");
+  };
 
   return (
     <Wrapper>
-      <IconComponent icon="list_icon" fn={handleListOnClick} />
-      <IconComponent icon="star_icon" fn={handleFavoriteOnClick} />
-      <IconComponent icon="signin_icon" fn={handleSignInOnClick} />
-      <IconComponent icon="menu_icon" fn={handleMenuOnClick} />
+      <IconComponent title="책목록 보기" icon="list_icon" fn={handleListOnClick} />
+      <IconComponent title="찜한 책" icon="star_icon" fn={handleFavoriteOnClick} />
+      <IconComponent title="me" icon="person_icon" fn={handleAdminOnClick} />
+      <IconComponent title="로그인" icon="signin_icon" fn={handleSignInOnClick} />
     </Wrapper>
   );
 };

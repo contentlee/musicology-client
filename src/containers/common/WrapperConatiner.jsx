@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Outlet } from "react-router";
 
 import styled from "styled-components";
@@ -30,8 +29,24 @@ const Header = styled.header`
   z-index: 10;
 `;
 
+const Footer = styled.footer`
+  position: relative;
+  top: 58px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+
+  hr {
+    width: 100%;
+    margin: 0 12px;
+    box-sizing: border-box;
+  }
+`;
+
 const WrapperContainer = () => {
-  const [mode, setMode] = useState("search");
   return (
     <Wrapper>
       <Header>
@@ -41,6 +56,12 @@ const WrapperContainer = () => {
       </Header>
 
       <Outlet />
+
+      <Footer>
+        <hr />
+        <LogoComponent />
+        <hr />
+      </Footer>
     </Wrapper>
   );
 };

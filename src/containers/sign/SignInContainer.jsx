@@ -1,7 +1,6 @@
-import { Navigate } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { MainWrapperComponent } from "../../components/common";
+import { ButtonComponent, InputComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
 
 const Wrapper = styled.section`
   display: flex;
@@ -9,7 +8,7 @@ const Wrapper = styled.section`
   align-items: center;
   justify-content: center;
 
-  padding: 40px;
+  padding: 40px 10px;
 
   a {
     margin: 18px;
@@ -25,45 +24,15 @@ const Form = styled.form`
   justify-content: center;
 `;
 
-const InputWrapper = styled.label`
-  span {
-    font-size: 14px;
-    font-weight: 700;
-    color: gray;
-    margin-right: 6px;
-  }
-
-  input {
-    height: 38px;
-    margin: 4px;
-    padding-left: 20px;
-    padding-right: 40px;
-
-    border: none;
-    border-radius: 50px;
-
-    background-color: rgba(0, 0, 0, 0.1);
-
-    box-sizing: border-box;
-  }
-`;
-
 const SignInContainer = () => {
   return (
     <MainWrapperComponent>
-      <hr />
-      <h1>로그인</h1>
-      <hr />
+      <TitleComponent title="로그인" />
       <Wrapper>
         <Form>
-          <InputWrapper for="id">
-            <span>ID</span>
-            <input id="id" type="text" name="id" placeholder="아이디를 입력해주세요!" />
-          </InputWrapper>
-          <InputWrapper for="password">
-            <span>PASSWORD</span>
-            <input id="password" type="password" name="password" placeholder="비밀번호를 입력해주세요!" />
-          </InputWrapper>
+          <InputComponent id="id" type="text" name="ID" placeholder="아이디를 입력해주세요." />
+          <InputComponent id="password" type="password" name="PASSWORD" placeholder="비밀번호를 입력해주세요!" />
+          <ButtonComponent style={{ width: "100%", backgroundColor: "#d31c00" }} name="로그인" type="submit" />
         </Form>
         <Link to={"/signup"}>회원가입이 필요하신가요?</Link>
       </Wrapper>

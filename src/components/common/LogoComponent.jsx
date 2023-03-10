@@ -6,7 +6,7 @@ const Logo = styled.div`
   position: relative;
   top: 2px;
 
-  width: 125px;
+  min-width: 100px;
   padding: 10px;
 
   text-align: center;

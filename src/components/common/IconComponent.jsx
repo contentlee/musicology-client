@@ -11,8 +11,8 @@ const Img = styled.img`
     cursor: pointer;
   }
 `;
-const IconComponent = ({ icon, fn }) => {
-  return <Img src={`${process.env.PUBLIC_URL}/assets/icons/${icon}.svg`} alt={icon} onClick={fn} />;
+const IconComponent = ({ title, icon, fn }) => {
+  return <Img src={`${process.env.PUBLIC_URL}/assets/icons/${icon}.svg`} alt={icon} onClick={fn} title={title} />;
 };
 
 export default IconComponent;

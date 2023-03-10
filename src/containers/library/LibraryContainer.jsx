@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-import { MainWrapperComponent } from "../../components/common";
+import { IconComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
 import { BookComponent } from "../../components/library";
 
 const Wrapper = styled.section`
@@ -15,13 +15,17 @@ const LibraryContainer = () => {
   const navigate = useNavigate();
   const handleBookOnClick = (e, id) => {
     e.preventDefault();
-    navigate(`/library/${id}`);
+    navigate(`/library/detail/${id}`);
+  };
+  const handleAddOnClick = (e) => {
+    e.preventDefault();
+    navigate(`/library/add`);
   };
   return (
     <MainWrapperComponent>
-      <hr />
-      <h1>책목록</h1>
-      <hr />
+      <TitleComponent title="책목록">
+        <IconComponent icon="add_icon" fn={handleAddOnClick} />
+      </TitleComponent>
       <Wrapper>
         <BookComponent fn={handleBookOnClick} />
         <BookComponent />

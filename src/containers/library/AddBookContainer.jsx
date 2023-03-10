@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 import {
@@ -38,7 +38,7 @@ const AddBookContainer = () => {
     navigate(-1);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const target = e.target;
     const req = {

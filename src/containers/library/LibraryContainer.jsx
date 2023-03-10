@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import styled from "styled-components";
 
 import { IconComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
 import { BookComponent } from "../../components/library";
-import { http } from "../../libs/http";
 
 const Wrapper = styled.section`
   display: flex;
@@ -21,6 +19,7 @@ const NullSpan = styled.div`
 `;
 
 const LibraryContainer = () => {
+  const books = useLoaderData();
   const navigate = useNavigate();
 
   const handleBookOnClick = (e, id) => {
@@ -32,18 +31,6 @@ const LibraryContainer = () => {
     navigate(`/library/add`);
   };
 
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    http
-      .get("/library")
-      .then((res) => {
-        setBooks(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
   return (
     <MainWrapperComponent>
       <TitleComponent title="책목록">

@@ -1,6 +1,5 @@
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import styled from "styled-components";
 
 import {
@@ -34,9 +33,7 @@ const Form = styled.form`
 `;
 
 const EditBookContainer = () => {
-  const { id } = useParams();
-
-  const [book, setBook] = useState();
+  const book = useLoaderData();
 
   const navigate = useNavigate();
   const handleCancelOnClick = (e) => {
@@ -44,11 +41,11 @@ const EditBookContainer = () => {
     navigate(-1);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const target = e.target;
     const req = {
-      _id: id,
+      _id: book._id,
       title: target[0].value,
       subtitle: target[1].value,
       author: target[2].value,
@@ -59,25 +56,15 @@ const EditBookContainer = () => {
       user_id: "admin",
       user_name: "admin",
     };
-
     http
-      .put(`/edit/${id}`, req)
+      .put(`/edit/${book._id}`, req)
       .then(() => {
-        navigate(`/library/detail/${id}`);
+        navigate(`/library/detail/${book._id}`);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    http
-      .get(`/library/detail/${id}`)
-      .then((res) => {
-        setBook(res);
-      })
-      .catch(() => {});
-  }, []);
 
   return (
     <MainWrapperComponent>

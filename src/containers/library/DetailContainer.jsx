@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { ButtonComponent, IconComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
 import {
   BookDescriptionComponent,
@@ -11,9 +10,8 @@ import { http } from "../../libs/http";
 
 const DetailContainer = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
 
-  const [book, setBook] = useState();
+  const book = useLoaderData();
 
   const handleBackOnClick = (e) => {
     e.preventDefault();
@@ -22,26 +20,18 @@ const DetailContainer = () => {
 
   const handleEditOnClick = (e) => {
     e.preventDefault();
-    navigate(`/library/edit/${id}`);
+    navigate(`/library/edit/${book._id}`);
   };
-  const handleDeleteOnClick = (e) => {
+
+  const handleDeleteOnClick = async (e) => {
     e.preventDefault();
-    http
-      .delete(`/delete/${id}`)
+    await http
+      .delete(`/delete/${book._id}`)
       .then(() => {
         navigate(`/library`);
       })
       .catch((err) => console.log(err));
   };
-
-  useEffect(() => {
-    http
-      .get(`/library/detail/${id}`)
-      .then((res) => {
-        setBook(res);
-      })
-      .catch(() => {});
-  }, []);
 
   return (
     <MainWrapperComponent>

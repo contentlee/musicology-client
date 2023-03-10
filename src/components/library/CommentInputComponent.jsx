@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useRef } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.section`

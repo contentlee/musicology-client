@@ -10,7 +10,6 @@ import {
 const DetailContainer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
 
   const handleBackOnClick = (e) => {
     e.preventDefault();

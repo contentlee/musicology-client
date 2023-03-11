@@ -76,22 +76,23 @@ const Wrapper = styled.div`
 `;
 
 const BookComponent = ({ fn, book }) => {
+  const { _id, title, subtitle, author, date_of_publication, img } = book;
   return (
     <Wrapper
       style={{
-        backgroundImage: book.img
-          ? book.img
+        backgroundImage: img
+          ? img
           : "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       }}
-      onClick={(e) => fn(e, book._id)}
+      onClick={(e) => fn(e, _id)}
     >
       <div />
       <img src={`${process.env.PUBLIC_URL}/assets/icons/star_outline_icon.svg`} alt="star" />
       <div>
-        <span className="title">{book.title}</span>
-        <span className="subtitle">{book.subtitle}</span>
-        <span className="author">{book.author}</span>
-        <span className="year">{getYear(new Date(book.date_of_publication))}</span>
+        <span className="title">{title}</span>
+        <span className="subtitle">{subtitle}</span>
+        <span className="author">{author}</span>
+        <span className="year">{getYear(new Date(date_of_publication))}</span>
       </div>
     </Wrapper>
   );

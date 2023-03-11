@@ -1,14 +1,12 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router";
+import { UserContext } from "./contexts";
 import { router } from "./routers/MainRouter";
-
-const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <UserContext>
       <RouterProvider router={router} />
-    </QueryClientProvider>
+    </UserContext>
   );
 }
 

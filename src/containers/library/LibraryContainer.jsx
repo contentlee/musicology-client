@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router";
+import { Navigate, useLoaderData, useNavigate } from "react-router";
 import styled from "styled-components";
 
 import { IconComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
@@ -19,7 +19,7 @@ const NullSpan = styled.div`
 `;
 
 const LibraryContainer = () => {
-  const books = useLoaderData();
+  const { status, data } = useLoaderData();
   const navigate = useNavigate();
 
   const handleBookOnClick = (e, id) => {
@@ -31,14 +31,17 @@ const LibraryContainer = () => {
     navigate(`/library/add`);
   };
 
+  console.log(data);
+  if (status === "error") return <Navigate to="/" />;
+
   return (
     <MainWrapperComponent>
       <TitleComponent title="책목록">
         <IconComponent icon="add_icon" fn={handleAddOnClick} />
       </TitleComponent>
       <Wrapper>
-        {books.length !== 0 ? (
-          books.map((book) => {
+        {data.length !== 0 ? (
+          data.map((book) => {
             return <BookComponent key={book._id} book={book} fn={handleBookOnClick} />;
           })
         ) : (

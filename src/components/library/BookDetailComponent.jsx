@@ -54,32 +54,33 @@ const InfoList = styled.ul`
 `;
 
 const BookDetailComponent = ({ book, children }) => {
+  const { _id, title, subtitle, author, date_of_publication, publisher, img, user_name, create_date, edit_date } = book;
   return (
     <Wrapper>
       <Img
         src={
-          book?.img
-            ? book.img
+          img
+            ? img
             : "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
         }
         alt="책 이미지"
       />
       <Detail>
-        <h2>{book?.title}</h2>
-        <h3>{book?.subtitle}</h3>
+        <h2>{title}</h2>
+        <h3>{subtitle}</h3>
         <DetailList>
           <li>
             <span>Author | </span>
-            <span>{book?.author}</span>
+            <span>{author}</span>
           </li>
           <li>
             <span>Publisher | </span>
-            <span>{book?.publisher}</span>
+            <span>{publisher}</span>
           </li>
 
           <li>
             <span>Year of Publication | </span>
-            <span>{book ? format(new Date(book.date_of_publication), "yyyy-MM-dd") : ""}</span>
+            <span>{format(new Date(date_of_publication), "yyyy-MM-dd")}</span>
           </li>
         </DetailList>
 
@@ -88,16 +89,16 @@ const BookDetailComponent = ({ book, children }) => {
         <InfoList>
           <li>
             <span>작성자 | </span>
-            <span>{book?.user_name}</span>
+            <span>{user_name}</span>
           </li>
           <li>
             <span>작성일 | </span>
-            <span>{book ? format(new Date(book.create_date), "yyyy-MM-dd HH:mm:ss") : ""}</span>
+            <span>{format(new Date(create_date), "yyyy-MM-dd HH:mm:ss")}</span>
           </li>
 
           <li>
             <span>최종 수정일 | </span>
-            <span>{book ? format(new Date(book.edit_date), "yyyy-MM-dd HH:mm:ss") : ""}</span>
+            <span>{format(new Date(edit_date), "yyyy-MM-dd HH:mm:ss")}</span>
           </li>
         </InfoList>
       </Detail>

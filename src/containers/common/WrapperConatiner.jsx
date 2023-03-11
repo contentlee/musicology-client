@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 import styled from "styled-components";
 
@@ -47,11 +47,19 @@ const Footer = styled.footer`
 `;
 
 const WrapperContainer = () => {
+  const navigate = useNavigate();
+
+  const handleSearchOnSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/library/search/${e.target[0].value}`);
+    e.target[0].value = "";
+  };
+
   return (
     <Wrapper>
       <Header>
         <LogoComponent />
-        <SearchInputComponent />
+        <SearchInputComponent fn={handleSearchOnSubmit} />
         <MenuContainer />
       </Header>
 

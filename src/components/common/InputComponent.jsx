@@ -32,7 +32,7 @@ const InputWrapper = styled.label`
   }
 `;
 
-const InputComponent = ({ defaultValue, name, id, type, placeholder, fn, required }) => {
+const InputComponent = ({ defaultValue, name, id, type, placeholder, fn, required, inputStyle }) => {
   return (
     <InputWrapper htmlFor={id}>
       <span>{name}</span>
@@ -44,6 +44,7 @@ const InputComponent = ({ defaultValue, name, id, type, placeholder, fn, require
         name={id}
         placeholder={placeholder}
         onChange={fn}
+        style={inputStyle}
       />
     </InputWrapper>
   );

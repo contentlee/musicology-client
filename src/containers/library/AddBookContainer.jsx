@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
+import { addBook } from "../../apis/library";
 
 import {
   ButtonComponent,
@@ -8,7 +9,6 @@ import {
   TextareaComponent,
   TitleComponent,
 } from "../../components/common";
-import { http } from "../../libs/http";
 
 const Wrapper = styled.section`
   padding: 20px;
@@ -53,12 +53,11 @@ const AddBookContainer = () => {
       user_name: "admin",
     };
 
-    http
-      .post("/add", req)
+    addBook(req)
       .then(() => {
         navigate("/library");
       })
-      .catch((err) => console.log(err));
+      .catch(() => alert("추가에 실패하였습니다."));
   };
 
   return (
@@ -69,7 +68,7 @@ const AddBookContainer = () => {
           <InputComponent name="Title" required={true} />
           <InputComponent name="Subtitle" />
           <InputComponent name="Author" required={true} />
-          <InputComponent name="Date of Publication" type="date" required={true} />
+          <InputComponent name="Date of Publication" type="date" required={true} inputStyle={{ padding: "0 20px" }} />
           <InputComponent name="Publisher" required={true} />
           <InputComponent name="Img" />
           <hr />

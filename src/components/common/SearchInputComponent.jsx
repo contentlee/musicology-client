@@ -26,23 +26,30 @@ const Form = styled.form`
     box-sizing: border-box;
   }
 
-  img {
+  button {
     position: absolute;
     right: 20px;
 
-    height: 24px;
+    background: none;
+    border: none;
 
-    &:hover {
-      cursor: pointer;
+    img {
+      height: 24px;
     }
   }
 `;
 
-const SearchInputComponent = () => {
+const SearchInputComponent = ({ fn }) => {
   return (
-    <Form>
-      <input type="text" placeholder="당신이 원하는 책을 검색하세요" />
-      <img src={`${process.env.PUBLIC_URL}/assets/icons/search_icon.svg`} alt="search icon" />
+    <Form onSubmit={fn}>
+      <input placeholder="당신이 원하는 책을 검색하세요" />
+      <button>
+        <img src={`${process.env.PUBLIC_URL}/assets/icons/search_icon.svg`} alt="search icon" />
+      </button>
+      {/* <label htmlFor="btn">
+        <img src={`${process.env.PUBLIC_URL}/assets/icons/search_icon.svg`} alt="search icon" />
+        <button id="btn" type="submit" onClick={fn} />
+      </label> */}
     </Form>
   );
 };

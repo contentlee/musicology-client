@@ -1,11 +1,13 @@
 import { Navigate } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
+
 import { WrapperContainer } from "../containers/common";
 import { AddBookContainer, DetailContainer, EditBookContainer, LibraryContainer } from "../containers/library";
 import { MainContainer } from "../containers/main";
 import { FavoriteContainer, MeContainer } from "../containers/mypage";
 import { SignInContainer, SignUpContainer } from "../containers/sign";
-import { http } from "../libs/http";
+
+import { getBook, getBooks, searchBook } from "../apis/library";
 
 export const router = createBrowserRouter([
   {
@@ -21,12 +23,7 @@ export const router = createBrowserRouter([
         path: "library",
         element: <LibraryContainer />,
         loader: async () => {
-          return await http
-            .get("/library")
-            .then((res) => res)
-            .catch((err) => {
-              console.log(err);
-            });
+          return await getBooks();
         },
       },
       {
@@ -37,28 +34,21 @@ export const router = createBrowserRouter([
         path: "library/edit/:id",
         element: <EditBookContainer />,
         loader: async ({ params }) => {
-          return await http
-            .get(`/library/detail/${params.id}`)
-            .then((res) => res)
-            .catch((err) => {
-              console.log(err);
-            });
+          return await getBook(params.id);
         },
       },
       {
-        path: "library/:word",
+        path: "library/search/:word",
         element: <LibraryContainer />,
+        loader: async ({ params }) => {
+          return await searchBook(params.word);
+        },
       },
       {
         path: "library/detail/:id",
         element: <DetailContainer />,
         loader: async ({ params }) => {
-          return await http
-            .get(`/library/detail/${params.id}`)
-            .then((res) => res)
-            .catch((err) => {
-              console.log(err);
-            });
+          return await getBook(params.id);
         },
       },
       {

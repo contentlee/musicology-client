@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router";
+
 import styled from "styled-components";
-import { addBook } from "../../apis/library";
+
+import { addBookApi } from "../../apis/library";
 
 import {
   ButtonComponent,
@@ -49,15 +51,13 @@ const AddBookContainer = () => {
       publisher: target[4].value,
       img: target[5].value,
       description: target[6].value,
-      user_id: "admin",
-      user_name: "admin",
     };
 
-    addBook(req)
+    addBookApi(req)
       .then(() => {
         navigate("/library");
       })
-      .catch(() => alert("추가에 실패하였습니다."));
+      .catch((err) => alert(err.message));
   };
 
   return (

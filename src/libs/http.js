@@ -1,13 +1,20 @@
 import axios from "axios";
 
 export const http = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-http.interceptors.response.use((config) => {
-  const res = config.data;
-  return res;
+http.interceptors.response.use((res) => {
+  return res.data;
+});
+
+http.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });

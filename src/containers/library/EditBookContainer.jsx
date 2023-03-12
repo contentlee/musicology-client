@@ -1,7 +1,9 @@
+import { useLoaderData, useNavigate } from "react-router";
+
 import { format } from "date-fns";
-import { Navigate, useLoaderData, useNavigate } from "react-router";
 import styled from "styled-components";
-import { editBook } from "../../apis/library";
+
+import { editBookApi } from "../../apis/library";
 
 import {
   ButtonComponent,
@@ -10,7 +12,6 @@ import {
   TextareaComponent,
   TitleComponent,
 } from "../../components/common";
-import { http } from "../../libs/http";
 
 const Wrapper = styled.section`
   padding: 20px;
@@ -34,7 +35,7 @@ const Form = styled.form`
 `;
 
 const EditBookContainer = () => {
-  const { data, status } = useLoaderData();
+  const { data } = useLoaderData();
   const { _id, title, subtitle, author, date_of_publication, publisher, img, description, creat_date } = data;
 
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const EditBookContainer = () => {
     navigate(-1);
   };
 
-  const handleOnSubmit = async (e) => {
+  const handleOnSubmit = (e) => {
     e.preventDefault();
     const target = e.target;
     const req = {
@@ -56,20 +57,17 @@ const EditBookContainer = () => {
       img: target[5].value,
       description: target[6].value,
       creat_date: creat_date,
-      user_id: "admin",
-      user_name: "admin",
     };
 
-    await editBook(_id, req)
-      .then(() => {
+    editBookApi(_id, req)
+      .then((res) => {
+        alert(res.message);
         navigate(`/library/detail/${_id}`);
       })
       .catch((err) => {
-        alert("수정에 실패하였습니다.");
+        alert(err.message);
       });
   };
-
-  if (status === "error") return <Navigate to={-1} />;
 
   return (
     <MainWrapperComponent>

@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, redirect } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 
 import { WrapperContainer } from "../containers/common";
@@ -7,70 +7,86 @@ import { MainContainer } from "../containers/main";
 import { FavoriteContainer, MeContainer } from "../containers/mypage";
 import { SignInContainer, SignUpContainer } from "../containers/sign";
 
-import { getBook, getBooks, searchBook } from "../apis/library";
+import { getBookApi, getBooksApi, getEditBookApi, searchBookApi } from "../apis/library";
+import { getFvBooksApi } from "../apis/favorite";
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <WrapperContainer />,
-    children: [
-      {
-        path: "/",
-        index: true,
-        element: <MainContainer />,
-      },
-      {
-        path: "library",
-        element: <LibraryContainer />,
-        loader: async () => {
-          return await getBooks();
+export const router = (isSignedIn, userInfo) => {
+  return createBrowserRouter([
+    {
+      path: "/",
+      element: <WrapperContainer />,
+      children: [
+        {
+          path: "/",
+          index: true,
+          element: <MainContainer />,
         },
-      },
-      {
-        path: "library/add",
-        element: <AddBookContainer />,
-      },
-      {
-        path: "library/edit/:id",
-        element: <EditBookContainer />,
-        loader: async ({ params }) => {
-          return await getBook(params.id);
+        {
+          path: "library",
+          element: <LibraryContainer />,
+          loader: async () => {
+            return await getBooksApi();
+          },
         },
-      },
-      {
-        path: "library/search/:word",
-        element: <LibraryContainer />,
-        loader: async ({ params }) => {
-          return await searchBook(params.word);
+        {
+          path: "library/add",
+          element: isSignedIn ? <AddBookContainer /> : <Navigate to="/signin" />,
         },
-      },
-      {
-        path: "library/detail/:id",
-        element: <DetailContainer />,
-        loader: async ({ params }) => {
-          return await getBook(params.id);
+        {
+          path: "library/edit/:id",
+          element: isSignedIn ? <EditBookContainer /> : <Navigate to="/signin" />,
+          loader: async ({ params }) => {
+            const { data, status } = await getEditBookApi(params.id);
+            if (status === "error") {
+              alert(data.message);
+              return redirect(`/library/detail/${params.id}`);
+            }
+            return { data, status };
+          },
         },
-      },
-      {
-        path: "signIn",
-        element: <SignInContainer />,
-      },
-      {
-        path: "signUp",
-        element: <SignUpContainer />,
-      },
-      {
-        path: "me",
-        element: <MeContainer />,
-      },
-      {
-        path: "favorite",
-        element: <FavoriteContainer />,
-      },
-      {
-        path: "*",
-        element: <Navigate to="/" />,
-      },
-    ],
-  },
-]);
+        {
+          path: "library/search/:word",
+          element: <LibraryContainer />,
+          loader: async ({ params }) => {
+            return await searchBookApi(params.word);
+          },
+        },
+        {
+          path: "library/detail/:id",
+          element: <DetailContainer />,
+          loader: async ({ params }) => {
+            return await getBookApi(params.id);
+          },
+        },
+        {
+          path: "signin",
+          element: isSignedIn ? <Navigate to="/" /> : <SignInContainer />,
+        },
+        {
+          path: "signup",
+          element: isSignedIn ? <Navigate to="/" /> : <SignUpContainer />,
+        },
+        {
+          path: "me",
+          element: isSignedIn ? <MeContainer /> : <Navigate to="/signin" />,
+        },
+        {
+          path: "favorite",
+          element: isSignedIn ? <FavoriteContainer /> : <Navigate to="/signin" />,
+          loader: async () => {
+            const { data, status } = await getFvBooksApi();
+            if (status === "error") {
+              alert(data.message);
+              return redirect(`/`);
+            }
+            return { data, status };
+          },
+        },
+        {
+          path: "*",
+          element: <Navigate to="/" />,
+        },
+      ],
+    },
+  ]);
+};

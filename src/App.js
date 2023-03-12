@@ -1,13 +1,11 @@
+import { useContext } from "react";
 import { RouterProvider } from "react-router";
-import { UserContext } from "./contexts";
+import { Sign } from "./contexts/UserContext";
 import { router } from "./routers/MainRouter";
 
 function App() {
-  return (
-    <UserContext>
-      <RouterProvider router={router} />
-    </UserContext>
-  );
+  const { isSignedIn } = useContext(Sign);
+  return <RouterProvider router={router(isSignedIn)} />;
 }
 
 export default App;

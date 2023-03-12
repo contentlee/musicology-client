@@ -1,4 +1,5 @@
 import { getYear } from "date-fns";
+
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -24,13 +25,22 @@ const Wrapper = styled.div`
   -webkit-user-select: none;
   user-select: none;
 
-  img {
+  button {
     position: absolute;
     top: 4px;
     right: 20px;
-    height: 24px;
 
-    fill: rgb(42, 169, 224);
+    background: none;
+    border: none;
+
+    img {
+      height: 24px;
+      fill: rgb(42, 169, 224);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   div {
@@ -58,10 +68,13 @@ const Wrapper = styled.div`
         font-weight: 600;
       }
     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &:hover {
-    cursor: pointer;
     div {
       &:first-child {
         filter: blur(5px);
@@ -75,8 +88,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const BookComponent = ({ fn, book }) => {
-  const { _id, title, subtitle, author, date_of_publication, img } = book;
+const BookComponent = ({ fn, icon_fn, book }) => {
+  const { _id, title, subtitle, author, date_of_publication, img, liked } = book;
   return (
     <Wrapper
       style={{
@@ -84,11 +97,15 @@ const BookComponent = ({ fn, book }) => {
           ? img
           : "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       }}
-      onClick={(e) => fn(e, _id)}
     >
       <div />
-      <img src={`${process.env.PUBLIC_URL}/assets/icons/star_outline_icon.svg`} alt="star" />
-      <div>
+      <button onClick={(e) => icon_fn(e, _id)}>
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/icons/${liked ? "star_filled_icon" : "star_outline_icon"}.svg`}
+          alt="star"
+        />
+      </button>
+      <div onClick={(e) => fn(e, _id)}>
         <span className="title">{title}</span>
         <span className="subtitle">{subtitle}</span>
         <span className="author">{author}</span>

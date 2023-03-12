@@ -52,7 +52,6 @@ const WrapperContainer = () => {
   const handleSearchOnSubmit = (e) => {
     e.preventDefault();
     navigate(`/library/search/${e.target[0].value}`);
-    e.target[0].value = "";
   };
 
   return (

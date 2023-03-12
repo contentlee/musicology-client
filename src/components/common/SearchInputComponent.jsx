@@ -42,14 +42,10 @@ const Form = styled.form`
 const SearchInputComponent = ({ fn }) => {
   return (
     <Form onSubmit={fn}>
-      <input placeholder="당신이 원하는 책을 검색하세요" />
+      <input placeholder="책을 검색하세요" />
       <button>
         <img src={`${process.env.PUBLIC_URL}/assets/icons/search_icon.svg`} alt="search icon" />
       </button>
-      {/* <label htmlFor="btn">
-        <img src={`${process.env.PUBLIC_URL}/assets/icons/search_icon.svg`} alt="search icon" />
-        <button id="btn" type="submit" onClick={fn} />
-      </label> */}
     </Form>
   );
 };

@@ -1,4 +1,5 @@
 import { useRef } from "react";
+
 import styled from "styled-components";
 
 const Wrapper = styled.label`
@@ -39,6 +40,7 @@ const TextareaComponent = ({ defaultValue, name, id, type, placeholder, fn, requ
       ref.current.style.height = "auto";
       ref.current.style.height = ref.current.scrollHeight + `px`;
     }
+    fn();
   };
   return (
     <Wrapper htmlFor={id}>

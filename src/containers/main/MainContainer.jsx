@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 const Wrapper = styled.main`
   position: relative;
 
@@ -46,7 +47,7 @@ const TextWrapper = styled.section`
   }
 `;
 
-const SlideWrapper = styled.section`
+const ImgWrapper = styled.section`
   position: relative;
   top: 58px;
 
@@ -71,9 +72,9 @@ const MainContainer = () => {
         <hr />
         <h1>우리의 도서관</h1>
       </TextWrapper>
-      <SlideWrapper>
+      <ImgWrapper>
         <Img src="https://images.pexels.com/photos/4132936/pexels-photo-4132936.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-      </SlideWrapper>
+      </ImgWrapper>
     </Wrapper>
   );
 };

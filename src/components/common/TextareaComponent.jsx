@@ -11,7 +11,6 @@ const Wrapper = styled.label`
     margin-right: 6px;
 
     font-size: 14px;
-    font-weight: 700;
     color: gray;
   }
 
@@ -29,6 +28,8 @@ const Wrapper = styled.label`
 
     box-sizing: border-box;
     resize: none;
+
+    white-space: pre-wrap;
   }
 `;
 

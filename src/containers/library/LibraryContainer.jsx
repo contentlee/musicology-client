@@ -1,9 +1,9 @@
-import { useContext } from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 
 import styled from "styled-components";
 
-import { addFavoriteApi } from "../../apis/favorite";
+import { addFavoriteApi, deleteFavoriteApi } from "../../apis/favorite";
 
 import { IconComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
 import { BookComponent } from "../../components/library";
@@ -24,12 +24,20 @@ const NullSpan = styled.div`
   padding: 20px;
 `;
 
+const ParaWrapper = styled.div`
+  padding: 10px;
+`;
+
 const LibraryContainer = () => {
   const navigate = useNavigate();
 
+  const { word } = useParams();
+
   const { isSignedIn } = useContext(Sign);
 
-  const { data } = useLoaderData();
+  const { books, favorite_books } = useLoaderData();
+
+  const [likedList, setLiked] = useState([]);
 
   const handleBookOnClick = (e, id) => {
     e.preventDefault();
@@ -44,21 +52,49 @@ const LibraryContainer = () => {
     e.preventDefault();
     if (!isSignedIn) navigate("/signin");
     else {
-      addFavoriteApi(book_id)
-        .then((res) => alert(res.message))
-        .catch((err) => alert(err.message));
+      addFavoriteApi(book_id).then((res) => {
+        setLiked([...likedList, book_id]);
+      });
     }
   };
+  const handleCancelFvOnClick = (e, book_id) => {
+    e.preventDefault();
+    deleteFavoriteApi(book_id).then(() => {
+      const temp = [...likedList];
+      const index = likedList.indexOf(book_id);
+
+      temp.splice(index, 1);
+      setLiked(temp);
+    });
+  };
+
+  useEffect(() => {
+    setLiked(favorite_books);
+  }, [favorite_books]);
 
   return (
     <MainWrapperComponent>
-      <TitleComponent title="책목록">
+      <TitleComponent title={`책목록(${books.length})`}>
         <IconComponent icon="add_icon" fn={handleAddOnClick} />
       </TitleComponent>
+      {word && (
+        <ParaWrapper>
+          "<b>{word}</b>"을(를) 검색하였습니다.
+        </ParaWrapper>
+      )}
       <Wrapper>
-        {data.length !== 0 ? (
-          data.map((book) => {
-            return <BookComponent key={book._id} book={book} fn={handleBookOnClick} icon_fn={handleFavoriteOnClick} />;
+        {books.length !== 0 ? (
+          books.map((book) => {
+            return (
+              <BookComponent
+                key={book._id}
+                book={book}
+                fn={handleBookOnClick}
+                liked_fn={handleFavoriteOnClick}
+                unliked_fn={handleCancelFvOnClick}
+                liked={likedList.includes(book._id)}
+              />
+            );
           })
         ) : (
           <NullSpan>데이터가 없습니다.</NullSpan>

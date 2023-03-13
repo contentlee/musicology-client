@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -11,18 +12,7 @@ const Wrapper = styled.div`
   padding: 0 10px;
 
   &:hover {
-    cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  @media screen and (max-width: 600px) {
-    img {
-      &:last-child {
-        position: absolute;
-        bottom: 12px;
-        right: 12px;
-      }
-    }
   }
 `;
 
@@ -32,6 +22,10 @@ const Img = styled.img`
 
   margin: 10px;
   object-fit: contain;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 600px) {
     width: 20%;
@@ -43,45 +37,51 @@ const Detail = styled.div`
   padding: 20px;
 
   box-sizing: border-box;
-`;
 
-const DetailList = styled.ul`
-  padding: 0;
-  font-size: 18px;
-  li {
-    list-style-type: none;
-    span {
-      &:first-child {
-        font-size: 12px;
-        font-weight: 900;
-      }
+  h2 {
+    &:hover {
+      cursor: pointer;
     }
   }
 `;
 
-const FavoirteBookComponent = ({ fn, children }) => {
+const DetailList = styled.ul`
+  padding: 0;
+  font-size: 14px;
+  li {
+    list-style-type: none;
+  }
+`;
+
+const FavoirteBookComponent = ({ book_info, fn, children }) => {
+  const { title, subtitle, author, publisher, date_of_publication, img } = book_info;
   return (
-    <Wrapper onClick={fn}>
+    <Wrapper>
       <Img
-        src="https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        src={
+          img
+            ? img
+            : "https://images.pexels.com/photos/3358707/pexels-photo-3358707.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        }
         alt="책 이미지"
+        onClick={fn}
       />
       <Detail>
-        <h2>안녕하세요, 저는 누구누구입니다.</h2>
-        <h3>subtitle</h3>
+        <h2 onClick={fn}>{title}</h2>
+        <h3>{subtitle}</h3>
         <DetailList>
           <li>
             <span>Author | </span>
-            <span>test 1</span>
+            <span>{author}</span>
           </li>
           <li>
             <span>Publisher | </span>
-            <span>test 1</span>
+            <span>{publisher}</span>
           </li>
 
           <li>
             <span>Year of Publication | </span>
-            <span>2022</span>
+            <span>{format(new Date(date_of_publication), "yyyy-MM-dd")}</span>
           </li>
         </DetailList>
       </Detail>

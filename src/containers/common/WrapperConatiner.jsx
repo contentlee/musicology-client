@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import MenuContainer from "./MenuContainer";
 import { LogoComponent, SearchInputComponent } from "../../components/common";
+import { UserContext } from "../../contexts";
 
 const Wrapper = styled.div`
   position: relative;
@@ -52,18 +53,20 @@ const WrapperContainer = () => {
   const handleSearchOnSubmit = (e) => {
     e.preventDefault();
     navigate(`/library/search/${e.target[0].value}`);
+    e.target[0].value = "";
   };
 
   return (
     <Wrapper>
-      <Header>
-        <LogoComponent />
-        <SearchInputComponent fn={handleSearchOnSubmit} />
-        <MenuContainer />
-      </Header>
+      <UserContext>
+        <Header>
+          <LogoComponent />
+          <SearchInputComponent fn={handleSearchOnSubmit} />
+          <MenuContainer />
+        </Header>
 
-      <Outlet />
-
+        <Outlet />
+      </UserContext>
       <Footer>
         <hr />
         <LogoComponent />

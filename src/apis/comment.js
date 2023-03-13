@@ -4,20 +4,20 @@ export const getCommentByBookIdApi = (book_id) =>
   http
     .get(`/comment/book/${book_id}`)
     .then((res) => {
-      return { status: "success", data: res.data };
+      return { status: "success", data: res.data.reverse() };
     })
-    .catch((err) => {
-      return { status: "error", data: err.response.data };
+    .catch(() => {
+      return { status: "error", data: [] };
     });
 
 export const getCommentByUserIdApi = () =>
   http
     .get(`/comment/user`)
     .then((res) => {
-      return { status: "success", data: res.data };
+      return { status: "success", data: res.data.reverse() };
     })
-    .catch((err) => {
-      return { status: "error", data: err.response.data };
+    .catch(() => {
+      return { status: "error", data: [] };
     });
 
 export const addCommentApi = (req) => http.post("/comment/add", req);

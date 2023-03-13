@@ -1,8 +1,11 @@
-import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
-import { ButtonComponent, InputComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
-import { signUpApi } from "../../apis/user";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import styled from "styled-components";
+
+import { signUpApi } from "../../apis/user";
+
+import { ButtonComponent, InputComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
 
 const Wrapper = styled.section`
   display: flex;
@@ -37,14 +40,10 @@ const SignUpContainer = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const temp = { user_id: e.target[0].value, pwd: e.target[1].value, user_name: e.target[3].value };
-    if (e.target[1].value !== e.target[2].value) return alert("");
-    signUpApi(temp)
-      .then(() => {
-        navigate("/signin");
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+    if (e.target[1].value !== e.target[2].value) return alert("비밀번호를 다시 확인해주세요.");
+    signUpApi(temp).then(() => {
+      navigate("/signin");
+    });
   };
 
   const [pwd, setPwd] = useState("");

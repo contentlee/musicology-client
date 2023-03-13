@@ -88,8 +88,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const BookComponent = ({ fn, icon_fn, book }) => {
-  const { _id, title, subtitle, author, date_of_publication, img, liked } = book;
+const BookComponent = ({ fn, liked_fn, unliked_fn, book, liked }) => {
+  const { _id, title, subtitle, author, date_of_publication, img } = book;
   return (
     <Wrapper
       style={{
@@ -99,7 +99,15 @@ const BookComponent = ({ fn, icon_fn, book }) => {
       }}
     >
       <div />
-      <button onClick={(e) => icon_fn(e, _id)}>
+      <button
+        onClick={(e) => {
+          if (liked) {
+            unliked_fn(e, _id);
+          } else {
+            liked_fn(e, _id);
+          }
+        }}
+      >
         <img
           src={`${process.env.PUBLIC_URL}/assets/icons/${liked ? "star_filled_icon" : "star_outline_icon"}.svg`}
           alt="star"

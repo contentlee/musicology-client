@@ -53,11 +53,9 @@ const AddBookContainer = () => {
       description: target[6].value,
     };
 
-    addBookApi(req)
-      .then(() => {
-        navigate("/library");
-      })
-      .catch((err) => alert(err.message));
+    addBookApi(req).then(() => {
+      navigate("/library");
+    });
   };
 
   return (

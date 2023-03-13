@@ -7,9 +7,24 @@ export const http = axios.create({
   },
 });
 
-http.interceptors.response.use((res) => {
-  return res.data;
-});
+http.interceptors.response.use(
+  (res) => {
+    return res.data;
+  },
+  (err) => {
+    if (err.response.data.public) {
+      throw Error();
+    }
+    if (err.response.status === 401) {
+      localStorage.removeItem("token");
+      alert(`${err.response.data.message} 다시 로그인해주세요!`);
+      throw Error();
+    }
+    alert(err.response.data.message);
+
+    throw Error();
+  }
+);
 
 http.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");

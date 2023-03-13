@@ -1,25 +1,22 @@
-import { useContext } from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { Outlet, useLoaderData, useNavigate } from "react-router";
 
 import { deleteBookApi } from "../../apis/library";
 
 import { Sign } from "../../contexts/UserContext";
 
 import { ButtonComponent, IconComponent, MainWrapperComponent, TitleComponent } from "../../components/common";
-import {
-  BookDescriptionComponent,
-  BookDetailComponent,
-  CommentComponent,
-  CommentInputComponent,
-} from "../../components/library";
+import { BookDescriptionComponent, BookDetailComponent } from "../../components/library";
 
-import { addFavoriteApi } from "../../apis/favorite";
+import { addFavoriteApi, deleteFavoriteApi } from "../../apis/favorite";
 
 const DetailContainer = () => {
   const navigate = useNavigate();
 
   const { isSignedIn } = useContext(Sign);
-  const { data } = useLoaderData();
+  const { data, included } = useLoaderData();
+
+  const [liked, setLiked] = useState(false);
 
   const handleBackOnClick = (e) => {
     e.preventDefault();
@@ -30,12 +27,18 @@ const DetailContainer = () => {
     e.preventDefault();
     if (!isSignedIn) navigate("/signin");
     else {
-      addFavoriteApi(data._id)
-        .then((res) => alert(res.message))
-        .catch((err) => alert(err.message));
+      addFavoriteApi(data._id).then(() => {
+        setLiked(true);
+      });
     }
   };
 
+  const handleCancelFvOnClick = (e) => {
+    e.preventDefault();
+    deleteFavoriteApi(data._id).then(() => {
+      setLiked(false);
+    });
+  };
   const handleEditOnClick = (e) => {
     e.preventDefault();
     if (!isSignedIn) navigate("/signin");
@@ -46,12 +49,14 @@ const DetailContainer = () => {
     e.preventDefault();
     if (!isSignedIn) navigate("/signin");
 
-    deleteBookApi(data._id)
-      .then(() => {
-        navigate(`/library`);
-      })
-      .catch((err) => alert(err.message));
+    deleteBookApi(data._id).then(() => {
+      navigate(`/library`);
+    });
   };
+
+  useEffect(() => {
+    setLiked(included);
+  }, [included]);
 
   return (
     <MainWrapperComponent>
@@ -60,15 +65,23 @@ const DetailContainer = () => {
       </TitleComponent>
 
       <BookDetailComponent book={data}>
-        <ButtonComponent
-          style={{ width: "80px", backgroundColor: "#ffd400" }}
-          name="찜하기"
-          fn={handleFavoriteOnClick}
-        />
-        {isSignedIn && (
+        {liked ? (
+          <ButtonComponent
+            style={{ width: "80px", backgroundColor: "#ffd400" }}
+            name="찜취소"
+            fn={handleCancelFvOnClick}
+          />
+        ) : (
+          <ButtonComponent
+            style={{ width: "80px", backgroundColor: "#ffd400" }}
+            name="찜하기"
+            fn={handleFavoriteOnClick}
+          />
+        )}
+        {data.edit_authority && (
           <ButtonComponent style={{ width: "80px", backgroundColor: "#4d377b" }} name="수정" fn={handleEditOnClick} />
         )}
-        {isSignedIn && (
+        {data.edit_authority && (
           <ButtonComponent style={{ width: "80px", backgroundColor: "#8E0023" }} name="삭제" fn={handleDeleteOnClick} />
         )}
       </BookDetailComponent>
@@ -77,16 +90,8 @@ const DetailContainer = () => {
       <BookDescriptionComponent description={data.description} />
 
       <TitleComponent title="댓글" />
-      {isSignedIn && (
-        <CommentInputComponent placeholder="내용을 입력해주세요.">
-          <ButtonComponent style={{ width: "80px", backgroundColor: "#8E0023" }} name="확인" type="submit" />
-          <ButtonComponent style={{ width: "80px", backgroundColor: "#808080" }} name="취소" />
-        </CommentInputComponent>
-      )}
 
-      <CommentComponent />
-      <CommentComponent />
-      <CommentComponent />
+      <Outlet />
     </MainWrapperComponent>
   );
 };

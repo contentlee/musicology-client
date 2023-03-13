@@ -2,15 +2,24 @@ import { Navigate, redirect } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 
 import { WrapperContainer } from "../containers/common";
-import { AddBookContainer, DetailContainer, EditBookContainer, LibraryContainer } from "../containers/library";
+import {
+  AddBookContainer,
+  CommentContainer,
+  DetailContainer,
+  EditBookContainer,
+  LibraryContainer,
+} from "../containers/library";
 import { MainContainer } from "../containers/main";
 import { FavoriteContainer, MeContainer } from "../containers/mypage";
 import { SignInContainer, SignUpContainer } from "../containers/sign";
 
 import { getBookApi, getBooksApi, getEditBookApi, searchBookApi } from "../apis/library";
-import { getFvBooksApi } from "../apis/favorite";
+import { getFvArrayApi, getFvBooksApi } from "../apis/favorite";
+import { getCommentByBookIdApi } from "../apis/comment";
+import { getNameApi } from "../apis/user";
 
-export const router = (isSignedIn, userInfo) => {
+export const router = () => {
+  const isSignedIn = () => (localStorage.getItem("token") ? true : false);
   return createBrowserRouter([
     {
       path: "/",
@@ -25,61 +34,88 @@ export const router = (isSignedIn, userInfo) => {
           path: "library",
           element: <LibraryContainer />,
           loader: async () => {
-            return await getBooksApi();
-          },
-        },
-        {
-          path: "library/add",
-          element: isSignedIn ? <AddBookContainer /> : <Navigate to="/signin" />,
-        },
-        {
-          path: "library/edit/:id",
-          element: isSignedIn ? <EditBookContainer /> : <Navigate to="/signin" />,
-          loader: async ({ params }) => {
-            const { data, status } = await getEditBookApi(params.id);
-            if (status === "error") {
-              alert(data.message);
-              return redirect(`/library/detail/${params.id}`);
-            }
-            return { data, status };
+            return await getFvArrayApi().then(async (res) => {
+              const { status, data } = await getBooksApi();
+              return { status, books: data.reverse(), favorite_books: res.data };
+            });
           },
         },
         {
           path: "library/search/:word",
           element: <LibraryContainer />,
           loader: async ({ params }) => {
-            return await searchBookApi(params.word);
+            return await getFvArrayApi().then(async (res) => {
+              const { status, data } = await searchBookApi(params.word);
+              return { status, books: data.reverse(), favorite_books: res.data };
+            });
+          },
+        },
+
+        {
+          path: "library/detail/:book_id",
+          element: <DetailContainer />,
+          loader: async ({ params }) => {
+            return await getFvArrayApi().then(async (res) => {
+              const { status, data } = await getBookApi(params.book_id);
+              return { status, data, included: res.data.includes(data._id) };
+            });
+          },
+          children: [
+            {
+              path: "",
+              element: <CommentContainer />,
+              loader: async (params) => {
+                return await getCommentByBookIdApi(params.params.book_id);
+              },
+            },
+          ],
+        },
+        {
+          path: "library/add",
+          element: <AddBookContainer />,
+          loader: () => {
+            if (!isSignedIn()) return redirect("/signin");
+            return {};
           },
         },
         {
-          path: "library/detail/:id",
-          element: <DetailContainer />,
+          path: "library/edit/:id",
+          element: <EditBookContainer />,
           loader: async ({ params }) => {
-            return await getBookApi(params.id);
+            if (!isSignedIn()) return redirect("/signin");
+            return await getEditBookApi(params.id);
           },
         },
         {
           path: "signin",
-          element: isSignedIn ? <Navigate to="/" /> : <SignInContainer />,
+          element: <SignInContainer />,
+          loader: () => {
+            if (isSignedIn()) return redirect("/");
+            return {};
+          },
         },
         {
           path: "signup",
-          element: isSignedIn ? <Navigate to="/" /> : <SignUpContainer />,
+          element: <SignUpContainer />,
+          loader: () => {
+            if (isSignedIn()) return redirect("/");
+            return {};
+          },
         },
         {
           path: "me",
-          element: isSignedIn ? <MeContainer /> : <Navigate to="/signin" />,
+          element: <MeContainer />,
+          loader: async () => {
+            if (!isSignedIn()) return redirect("/signin");
+            return await getNameApi();
+          },
         },
         {
           path: "favorite",
-          element: isSignedIn ? <FavoriteContainer /> : <Navigate to="/signin" />,
+          element: <FavoriteContainer />,
           loader: async () => {
-            const { data, status } = await getFvBooksApi();
-            if (status === "error") {
-              alert(data.message);
-              return redirect(`/`);
-            }
-            return { data, status };
+            if (!isSignedIn()) return redirect("/signin");
+            return await getFvBooksApi();
           },
         },
         {

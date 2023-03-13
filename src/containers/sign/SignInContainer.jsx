@@ -37,15 +37,11 @@ const SignInContainer = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    signInApi({ user_id: e.target[0].value, pwd: e.target[1].value })
-      .then((res) => {
-        localStorage.setItem("token", res.token);
-        setSignedInFn(true);
-        navigate(-1);
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+    signInApi({ user_id: e.target[0].value, pwd: e.target[1].value }).then((res) => {
+      localStorage.setItem("token", res.token);
+      setSignedInFn(true);
+      navigate(-1);
+    });
   };
 
   return (

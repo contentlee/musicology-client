@@ -1,3 +1,4 @@
+import { redirect } from "react-router";
 import { http } from "../libs/http";
 
 export const getBooksApi = () =>
@@ -6,7 +7,7 @@ export const getBooksApi = () =>
     .then((res) => {
       return { status: "success", data: res.data };
     })
-    .catch((err) => {
+    .catch(() => {
       return { status: "error", data: [] };
     });
 
@@ -16,9 +17,7 @@ export const getBookApi = (book_id) =>
     .then((res) => {
       return { status: "success", data: res.data };
     })
-    .catch((err) => {
-      return { status: "error", data: err.response.data };
-    });
+    .catch(() => redirect("/library"));
 
 export const searchBookApi = (word) =>
   http
@@ -26,8 +25,8 @@ export const searchBookApi = (word) =>
     .then((res) => {
       return { status: "success", data: res.data };
     })
-    .catch((err) => {
-      return { status: "error", data: err.response.data };
+    .catch(() => {
+      return { status: "error", data: [] };
     });
 
 export const getEditBookApi = (book_id) =>
@@ -36,9 +35,7 @@ export const getEditBookApi = (book_id) =>
     .then((res) => {
       return { status: "success", data: res.data };
     })
-    .catch((err) => {
-      return { status: "error", data: err.response.data };
-    });
+    .catch(() => redirect(`/library/detail/${book_id}`));
 
 export const addBookApi = (req) => http.post("/library/add", req);
 export const editBookApi = (book_id, req) => http.put(`/library/edit/${book_id}`, req);

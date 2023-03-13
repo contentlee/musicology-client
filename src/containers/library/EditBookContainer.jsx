@@ -59,14 +59,10 @@ const EditBookContainer = () => {
       creat_date: creat_date,
     };
 
-    editBookApi(_id, req)
-      .then((res) => {
-        alert(res.message);
-        navigate(`/library/detail/${_id}`);
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+    editBookApi(_id, req).then((res) => {
+      alert(res.message);
+      navigate(`/library/detail/${_id}`);
+    });
   };
 
   return (

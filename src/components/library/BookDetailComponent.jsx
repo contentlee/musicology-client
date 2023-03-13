@@ -1,5 +1,5 @@
-import { format, getYear } from "date-fns";
 import styled from "styled-components";
+import { format } from "date-fns";
 
 const Wrapper = styled.section`
   display: flex;
@@ -38,7 +38,6 @@ const DetailList = styled.ul`
     list-style-type: none;
     span {
       font-size: 12px;
-      font-weight: 900;
     }
   }
 `;
@@ -54,7 +53,7 @@ const InfoList = styled.ul`
 `;
 
 const BookDetailComponent = ({ book, children }) => {
-  const { _id, title, subtitle, author, date_of_publication, publisher, img, user_name, create_date, edit_date } = book;
+  const { title, subtitle, author, date_of_publication, publisher, img, user_name, create_date, edit_date } = book;
   return (
     <Wrapper>
       <Img

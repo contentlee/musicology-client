@@ -1,4 +1,5 @@
 import { useRef } from "react";
+
 import styled from "styled-components";
 
 const Wrapper = styled.section`
@@ -16,6 +17,7 @@ const Wrapper = styled.section`
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.1);
 
+    white-space: pre-wrap;
     &:focus {
       outline: none;
     }

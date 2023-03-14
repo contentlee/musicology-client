@@ -37,7 +37,7 @@ const MenuContainer = () => {
     e.preventDefault();
     if (isSignedIn) {
       if (window.confirm("로그아웃하시겠습니까?")) {
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         setSignedInFn(false);
         navigate("/");
       }

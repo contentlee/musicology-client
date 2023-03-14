@@ -41,7 +41,9 @@ const TextareaComponent = ({ defaultValue, name, id, type, placeholder, fn, requ
       ref.current.style.height = "auto";
       ref.current.style.height = ref.current.scrollHeight + `px`;
     }
-    fn();
+    if (fn) {
+      fn();
+    }
   };
   return (
     <Wrapper htmlFor={id}>

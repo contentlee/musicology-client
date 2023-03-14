@@ -12,7 +12,7 @@ const UserContext = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) setSignedIn(true);
   }, []);
 

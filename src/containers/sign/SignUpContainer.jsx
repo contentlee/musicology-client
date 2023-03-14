@@ -41,6 +41,11 @@ const SignUpContainer = () => {
     e.preventDefault();
     const temp = { user_id: e.target[0].value, pwd: e.target[1].value, user_name: e.target[3].value };
     if (e.target[1].value !== e.target[2].value) return alert("비밀번호를 다시 확인해주세요.");
+    if (e.target[0].value.length < 3 || e.target[0].value.length > 10)
+      return alert("아이디 글자수를 확인해주세요.(3~10자)");
+    if (e.target[3].value.length < 3 || e.target[3].value.length > 10)
+      return alert("닉네임 글자수를 확인해주세요.(3~10자)");
+
     signUpApi(temp).then(() => {
       navigate("/signin");
     });
@@ -63,7 +68,7 @@ const SignUpContainer = () => {
 
       <Wrapper>
         <Form onSubmit={handleOnSubmit}>
-          <InputComponent id="id" type="text" name="ID" placeholder="아이디를 입력해주세요." />
+          <InputComponent id="id" type="text" name="ID" placeholder="아이디를 입력해주세요.(3~10자)" />
           <InputComponent
             id="password"
             type="password"
@@ -80,7 +85,7 @@ const SignUpContainer = () => {
             message={pwd !== repwd ? "※입력하신 비밀번호가 일치하지 않습니다." : ""}
           />
           <hr />
-          <InputComponent id="nickname" type="text" name="NICKNAME" placeholder="닉네임을 입력해주세요!" />
+          <InputComponent id="nickname" type="text" name="NICKNAME" placeholder="닉네임을 입력해주세요.(3~10자)" />
 
           <ButtonComponent style={{ width: "100%", backgroundColor: "#d31c00" }} name="회원가입" type="submit" />
         </Form>

@@ -16,7 +16,7 @@ http.interceptors.response.use(
       throw Error();
     }
     if (err.response.status === 401) {
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       alert(`${err.response.data.message} 다시 로그인해주세요!`);
       throw Error();
     }
@@ -27,7 +27,7 @@ http.interceptors.response.use(
 );
 
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

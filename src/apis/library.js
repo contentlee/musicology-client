@@ -5,7 +5,7 @@ export const getBooksApi = () =>
   http
     .get("/library")
     .then((res) => {
-      return { status: "success", data: res.data };
+      return { status: "success", data: res.data.reverse() };
     })
     .catch(() => {
       return { status: "error", data: [] };
@@ -17,13 +17,15 @@ export const getBookApi = (book_id) =>
     .then((res) => {
       return { status: "success", data: res.data };
     })
-    .catch(() => redirect("/library"));
+    .catch(() => {
+      return { status: "error", data: {} };
+    });
 
 export const searchBookApi = (word) =>
   http
     .get(`/library/search/${word}`)
     .then((res) => {
-      return { status: "success", data: res.data };
+      return { status: "success", data: res.data.reverse() };
     })
     .catch(() => {
       return { status: "error", data: [] };

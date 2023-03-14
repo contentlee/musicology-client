@@ -35,13 +35,14 @@ const Form = styled.form`
 `;
 
 const EditBookContainer = () => {
-  const { data } = useLoaderData();
-  const { _id, title, subtitle, author, date_of_publication, publisher, img, description, creat_date } = data;
+  const {
+    data: { _id, title, subtitle, author, date_of_publication, publisher, img, description, creat_date },
+  } = useLoaderData();
 
   const navigate = useNavigate();
   const handleCancelOnClick = (e) => {
     e.preventDefault();
-    navigate(-1);
+    navigate("/library");
   };
 
   const handleOnSubmit = (e) => {

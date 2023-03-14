@@ -37,7 +37,7 @@ const AddBookContainer = () => {
   const navigate = useNavigate();
   const handleCancelOnClick = (e) => {
     e.preventDefault();
-    navigate(-1);
+    navigate("/library");
   };
 
   const handleOnSubmit = async (e) => {

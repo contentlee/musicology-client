@@ -39,7 +39,7 @@ const MeContainer = () => {
       alert("변경되기 전 이름과 같은 이름입니다.");
     } else {
       changeUserNameApi({ new_name: e.target[0].value }).then((res) => {
-        localStorage.setItem("token", res.token);
+        sessionStorage.setItem("token", res.token);
         alert(res.message);
       });
     }

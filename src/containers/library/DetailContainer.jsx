@@ -20,7 +20,7 @@ const DetailContainer = () => {
 
   const handleBackOnClick = (e) => {
     e.preventDefault();
-    navigate(-1);
+    navigate("/library");
   };
 
   const handleFavoriteOnClick = (e) => {
@@ -48,14 +48,17 @@ const DetailContainer = () => {
   const handleDeleteOnClick = (e) => {
     e.preventDefault();
     if (!isSignedIn) navigate("/signin");
-
-    deleteBookApi(data._id).then(() => {
-      navigate(`/library`);
-    });
+    if (window.confirm("삭제하시겠습니까?")) {
+      deleteBookApi(data._id).then(() => {
+        navigate(`/library`);
+      });
+    }
   };
 
   useEffect(() => {
-    setLiked(included);
+    if (included) {
+      setLiked(included);
+    }
   }, [included]);
 
   return (

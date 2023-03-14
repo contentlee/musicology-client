@@ -35,7 +35,7 @@ const LibraryContainer = () => {
 
   const { isSignedIn } = useContext(Sign);
 
-  const { books, favorite_books } = useLoaderData();
+  const { data, favorite_books } = useLoaderData();
 
   const [likedList, setLiked] = useState([]);
 
@@ -69,12 +69,14 @@ const LibraryContainer = () => {
   };
 
   useEffect(() => {
-    setLiked(favorite_books);
+    if (favorite_books) {
+      setLiked(favorite_books);
+    }
   }, [favorite_books]);
 
   return (
     <MainWrapperComponent>
-      <TitleComponent title={`책목록(${books.length})`}>
+      <TitleComponent title={`책목록(${data.length})`}>
         <IconComponent icon="add_icon" fn={handleAddOnClick} />
       </TitleComponent>
       {word && (
@@ -83,8 +85,8 @@ const LibraryContainer = () => {
         </ParaWrapper>
       )}
       <Wrapper>
-        {books.length !== 0 ? (
-          books.map((book) => {
+        {data.length !== 0 ? (
+          data.map((book) => {
             return (
               <BookComponent
                 key={book._id}
@@ -92,7 +94,7 @@ const LibraryContainer = () => {
                 fn={handleBookOnClick}
                 liked_fn={handleFavoriteOnClick}
                 unliked_fn={handleCancelFvOnClick}
-                liked={likedList.includes(book._id)}
+                liked={likedList?.includes(book._id)}
               />
             );
           })

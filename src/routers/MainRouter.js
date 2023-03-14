@@ -19,7 +19,7 @@ import { getCommentByBookIdApi } from "../apis/comment";
 import { getNameApi } from "../apis/user";
 
 export const router = () => {
-  const isSignedIn = () => (localStorage.getItem("token") ? true : false);
+  const isSignedIn = () => (sessionStorage.getItem("token") ? true : false);
   return createBrowserRouter([
     {
       path: "/",
@@ -34,20 +34,28 @@ export const router = () => {
           path: "library",
           element: <LibraryContainer />,
           loader: async () => {
-            return await getFvArrayApi().then(async (res) => {
-              const { status, data } = await getBooksApi();
-              return { status, books: data.reverse(), favorite_books: res.data };
-            });
+            if (isSignedIn()) {
+              return await getFvArrayApi().then(async (res) => {
+                const { status, data } = await getBooksApi();
+                return { status, data: data, favorite_books: res.data };
+              });
+            } else {
+              return await getBooksApi();
+            }
           },
         },
         {
           path: "library/search/:word",
           element: <LibraryContainer />,
           loader: async ({ params }) => {
-            return await getFvArrayApi().then(async (res) => {
-              const { status, data } = await searchBookApi(params.word);
-              return { status, books: data.reverse(), favorite_books: res.data };
-            });
+            if (isSignedIn()) {
+              return await getFvArrayApi().then(async (res) => {
+                const { status, data } = await searchBookApi(params.word);
+                return { status, data: data, favorite_books: res.data };
+              });
+            } else {
+              return await searchBookApi(params.word);
+            }
           },
         },
 
@@ -55,10 +63,15 @@ export const router = () => {
           path: "library/detail/:book_id",
           element: <DetailContainer />,
           loader: async ({ params }) => {
-            return await getFvArrayApi().then(async (res) => {
-              const { status, data } = await getBookApi(params.book_id);
-              return { status, data, included: res.data.includes(data._id) };
-            });
+            if (isSignedIn()) {
+              return await getFvArrayApi().then(async (res) => {
+                const { status, data } = await getBookApi(params.book_id);
+                if (status === "error") return redirect("/library");
+                return { status, data, included: res.data.includes(data._id) };
+              });
+            } else {
+              return await getBookApi(params.book_id);
+            }
           },
           children: [
             {

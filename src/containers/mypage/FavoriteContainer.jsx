@@ -18,6 +18,7 @@ const NullSpan = styled.div`
   justify-content: center;
   width: 100%;
   padding: 20px;
+  box-sizing: border-box;
 `;
 
 const FavoriteContainer = () => {
@@ -25,6 +26,20 @@ const FavoriteContainer = () => {
 
   const { data } = useLoaderData();
   const [bookList, setBookList] = useState([]);
+
+  const handleBookOnClick = (e, book_id) => {
+    e.preventDefault();
+    navigate(`/library/detail/${book_id}`);
+  };
+
+  const handleDeleteOnClick = (e, book_id, i) => {
+    e.preventDefault();
+    deleteFavoriteApi(book_id).then(() => {
+      const temp = [...bookList];
+      temp.splice(i, 1);
+      setBookList(temp);
+    });
+  };
 
   useEffect(() => {
     setBookList(data);
@@ -34,27 +49,15 @@ const FavoriteContainer = () => {
       <TitleComponent title="추가된 책목록" />
       <Wrapper>
         {bookList.length !== 0 ? (
-          bookList.map((book_info, i) => {
-            const handleBookOnClick = (e) => {
-              e.preventDefault();
-              navigate(`/library/detail/${book_info._id}`);
-            };
-
-            const handleDeleteOnClick = (e) => {
-              e.preventDefault();
-              deleteFavoriteApi(book_info._id).then(() => {
-                const temp = [...bookList];
-                temp.splice(i, 1);
-                setBookList(temp);
-              });
-            };
-
-            return (
-              <FavoirteBookComponent key={book_info._id} book_info={book_info} fn={handleBookOnClick}>
-                <IconComponent title="삭제" icon="delete_icon" fn={handleDeleteOnClick} />
-              </FavoirteBookComponent>
-            );
-          })
+          bookList.map((book_info, i) => (
+            <FavoirteBookComponent
+              key={book_info._id}
+              book_info={book_info}
+              fn={(e) => handleBookOnClick(e, book_info._id)}
+            >
+              <IconComponent title="삭제" icon="delete_icon" fn={(e) => handleDeleteOnClick(e, book_info._id, i)} />
+            </FavoirteBookComponent>
+          ))
         ) : (
           <NullSpan>추가된 책이 없습니다.</NullSpan>
         )}

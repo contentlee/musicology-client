@@ -5,6 +5,7 @@ export const http = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 3000,
 });
 
 http.interceptors.response.use(
